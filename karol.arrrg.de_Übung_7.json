@@ -1,0 +1,6 @@
+{
+    "title": "Parkour",
+    "description": "Setz die Blöcke in einer Reihe!",
+    "world": "x;5;3;6;\n_:_;_:_;r;_:_;_:_\nE:_;_:r;r:rr;_:r;_:_\n_:_;_:_;r;_:_;_:_\nx;3;5;6;\n_:_;S:_;_:_\n_:_;_:r;_:_\nr:_;r:rr;r:_\n_:_;_:r;_:_\n_:_;_:_;_:_",
+    "preload": "# Nix"
+}

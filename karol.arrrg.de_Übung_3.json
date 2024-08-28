@@ -1,0 +1,6 @@
+{
+    "title": "Verschieben",
+    "description": "Entferne den Ziegel mit k1.aufheben() und lege dann einen Ziegel an die markierte Stelle!",
+    "world": "x;5;3;6;\n_:_;_:_;_:_;_:_;_:_\nS:_;_:_;_:_;_:_;_:r\nr:_;_:_;_:_;_:_;_:_",
+    "preload": "# Nix"
+}

@@ -1,0 +1,6 @@
+{
+    "title": "Spiegelei",
+    "description": "Setze eine Marke an die vorgegebene Stelle! Nutze dafür k1.markeSetzen()",
+    "world": "x;3;3;6;\nE:_;_:_;_:_\n_:_;_:Y;_:_\n_:_;_:_;_:_",
+    "preload": "# Nix"
+}

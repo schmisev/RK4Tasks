@@ -1,6 +1,0 @@
-{
-    "title": "Chaos 2",
-    "description": "Räume alle Blöcke auf!",
-    "world": "x;3;3;6\n.:_;.:_;.:_\n.:_;.:_;.:_\n.:_;.:_;.:_\n",
-    "preload": "# Nichts"
-}

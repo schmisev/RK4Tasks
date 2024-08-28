@@ -1,0 +1,6 @@
+{
+        "title": "Um die Ecke",
+        "description": "Lege einen Ziegel an die markierte Stelle!",
+        "world": "x;3;3;6;\nS:_;_:_;_:_\n_:_;_:_;_:_\n_:_;_:_;_:r",
+        "preload": "# Nix"
+}

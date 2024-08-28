@@ -1,0 +1,6 @@
+{
+    "title": "Treppe",
+    "description": "Baue die Treppe! Nutze dafür die neue Methode stapeln(), z.B. k1.stapeln(2)",
+    "world": "x;5;1;6;\nE:_;_:r;_:rr;_:rrr;_:_",
+    "preload": "# Legt mehrere Blöcke gleichzeitig\nMethode stapeln(Zahl n) für Roboter\n        wiederhole n mal\n            hinlegen()\n        ende\nende"
+}
