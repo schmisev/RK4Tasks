@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body {
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .cell {
+            border: 2px gray solid;
+            background-color: lightgray;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .wi {
+            width: 40px;
+            font-size: larger;
+        }
+        .wi.left {
+            border: 2px black solid;
+            background-color: whitesmoke;
+        }
+        .wi.empty {
+            background-color: black;
+            color: white;
+        }
+        .wi.right {
+            border: 2px black solid;
+            background-color: orange;
+        }
+
+        #output {
+            border: 2px gray solid;
+            width: 500px;
+            height: 500px;
+            text-wrap: pretty;
+        }
+    </style>
+    <head>
+        <title>🤖RK4 Editor</title>
+    </head>
+    <body>
+        <h1>🤖 RK4 Aufgabeneditor</h1>
+        L = 
+        <input class="wi" id="length-input" value="5" type="number" min="1">
+        B = 
+        <input class="wi" id="width-input" value="3" type="number" min="1">
+        H = 
+        <input class="wi" id="height-input" value="6" type="number" min="1">
+        <button>Generiere .json</button>
+
+        <table id="world-table">
+        </table>
+
+        Welt-String:<br>
+        <textarea id="output"></textarea>
+        
+        <script src="index.js"></script>
+    </body>
+</html>
