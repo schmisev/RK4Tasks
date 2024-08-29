@@ -8,9 +8,36 @@
         <div id="container">
             <h1>🤖RK4 Tasks</h1>
             <h2>Aufgabeneditor</h2>
-            <textarea class="textbox" id="task-title">Titel</textarea><br>
-            <textarea class="textbox" id="task-description">Beschreibung</textarea><br>
-            <textarea class="codebox" id="task-preload"># Preload</textarea><br>
+            <p>
+                Schlüssel-Daten:<br>
+                <div class="warning">hier sind keine _ erlaubt!</div>
+                <table>
+                    <tr>
+                        <td>Autor:</td><td><input id="task-author" value="" onchange="showJSONText()"></td>
+                    </tr>
+                    <tr>
+                        <td>Kategorie:</td><td><input id="task-category" value="X" onchange="showJSONText()"></td>
+                    </tr>
+                    <tr>
+                        <td>Id:</td><td><input id="task-id" value="1" onchange="showJSONText()"></td>
+                    </tr>
+                </table>
+            </p>
+            <p>
+                Meta-Daten:<br>
+                <textarea class="textbox" id="task-title" onchange="showJSONText()">Titel</textarea><br>
+                <textarea class="textbox" id="task-description" onchange="showJSONText()">Beschreibung</textarea><br>
+                <textarea class="codebox" id="task-preload" onchange="showJSONText()"># Preload</textarea><br>
+            </p>
+            <p>
+                Welt-Daten: <button onclick="createWorldTable(); showJSONText();">NEUE TEILAUFGABE</button><br>
+                <div id="all-world-tables">
+                </div>
+            </p>
+            <p>
+                Ausgabe:<br>
+                <textarea id="show-json"></textarea>
+            </p>
         </div>
     </body>
 </html>
