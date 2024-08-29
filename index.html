@@ -1,64 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <style>
-        body {
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
-        }
-
-        td {
-            text-align: center;
-        }
-
-        .cell {
-            border: 2px gray solid;
-            background-color: lightgray;
-            padding: 5px;
-            border-radius: 5px;
-        }
-
-        .wi {
-            width: 40px;
-            font-size: larger;
-        }
-        .wi.left {
-            border: 2px black solid;
-            background-color: whitesmoke;
-        }
-        .wi.empty {
-            background-color: black;
-            color: white;
-        }
-        .wi.right {
-            border: 2px black solid;
-            background-color: orange;
-        }
-
-        #output {
-            border: 2px gray solid;
-            width: 500px;
-            height: 500px;
-            text-wrap: pretty;
-        }
-    </style>
     <head>
-        <title>🤖RK4 Editor</title>
+        <meta charset="utf-8" />
+        <title>🤖RK4 Tasks</title>
     </head>
     <body>
-        <h1>🤖 RK4 Aufgabeneditor</h1>
-        L = 
-        <input class="wi" id="length-input" value="5" type="number" min="1">
-        B = 
-        <input class="wi" id="width-input" value="3" type="number" min="1">
-        H = 
-        <input class="wi" id="height-input" value="6" type="number" min="1">
-        <button>Generiere .json</button>
-
-        <table id="world-table">
-        </table>
-
-        Welt-String:<br>
-        <textarea id="output"></textarea>
-        
-        <script src="index.js"></script>
+        <div id="container">
+            <h1>🤖RK4 Tasks</h1>
+            <h2>Aufgabeneditor</h2>
+            <textarea class="textbox" id="task-title">Titel</textarea><br>
+            <textarea class="textbox" id="task-description">Beschreibung</textarea><br>
+            <textarea class="codebox" id="task-preload"># Preload</textarea><br>
+        </div>
     </body>
 </html>
