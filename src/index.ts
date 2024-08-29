@@ -102,7 +102,7 @@ function generateJSONText() {
                         worldResult += rc.value;
                     }
                 }
-                if (i < l.valueAsNumber)
+                if (i < l.valueAsNumber - 1)
                     worldResult += ";";
             }
             worldResult += "\\n";
@@ -110,7 +110,7 @@ function generateJSONText() {
     }
 
     let result = `{
-"title": "${title.value.replace(/\n/g, "\\n")}",
+"title": "${title.value.replace(/\n/g, "\\n")}",\n
 "description": "${description.value.replace(/\n/g, "\\n")}",
 "preload": "${preload.value.replace(/\n/g, "\\n")}",
 "world": "${worldResult}"
