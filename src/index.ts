@@ -80,7 +80,7 @@ function generateJSONText() {
     const description = document.getElementById("task-description") as HTMLTextAreaElement;
     const preload = document.getElementById("task-preload") as HTMLTextAreaElement;
 
-    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}.json`;
+    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}_${description.value}.json`;
 
     let worldResult = ``;
     
@@ -128,7 +128,21 @@ function showJSONText() {
 }
 
 function downloadJSON() {
-    
+    const currentText = generateJSONText();
+    downloadTextFile(currentText.filename, currentText.result)
+}
+
+function downloadTextFile(filename: string, text: string) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }
 
 // globals
@@ -139,6 +153,7 @@ declare global {
         createWorldTable: any; 
         deleteWorldTable: any;
         showJSONText: any;
+        downloadJSON: any;
     }
 }
 window.updateWorldTable = updateWorldTable;
@@ -146,6 +161,7 @@ window.replaceWorldTable = replaceWorldTable;
 window.deleteWorldTable = deleteWorldTable;
 window.createWorldTable = createWorldTable;
 window.showJSONText = showJSONText;
+window.downloadJSON = downloadJSON;
 
 // initial setup
 createWorldTable();
