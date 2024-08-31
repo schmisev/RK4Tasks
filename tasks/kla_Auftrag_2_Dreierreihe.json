@@ -1,0 +1,6 @@
+{
+    "title": "Dreierreihe",
+    "description": "Erstelle eine Methode für die Roboterklasse, die eine Reihe aus drei Ziegeln legt.",
+    "preload": "// Nichts vorgegeben",
+    "world": "x;1;4;6;\nS:_\n_:r\n_:r\n_:r\n"
+}

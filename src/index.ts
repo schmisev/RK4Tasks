@@ -80,7 +80,7 @@ function generateJSONText() {
     const description = document.getElementById("task-description") as HTMLTextAreaElement;
     const preload = document.getElementById("task-preload") as HTMLTextAreaElement;
 
-    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}_${description.value}.json`;
+    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}_${title.value}.json`;
 
     let worldResult = ``;
     

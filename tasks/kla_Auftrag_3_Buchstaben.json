@@ -1,0 +1,6 @@
+{
+    "title": "Buchstaben",
+    "description": "Schreibe den Anfangsbuchstaben deines Namens mit Marken.",
+    "preload": "// Nichts vorgegeben",
+    "world": "x;6;6;6;\nN;_;_;_;_;_\n_;_;_;_;_;_\n_;_;_;_;_;_\n_;_;_;_;_;_\n_;_;_;_;_;_\n_;_;_;_;_;_\n"
+}
