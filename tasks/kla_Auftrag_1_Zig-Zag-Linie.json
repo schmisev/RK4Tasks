@@ -1,6 +1,6 @@
 {
-    "title": "kla",
-    "description": "Zig-Zag-Linie",
+    "title": "Zig-Zag-Linie",
+    "description": "Lege eine Zick-Zack-Linie.",
     "preload": "// Nichts vorgegeben",
     "world": "x;4;4;6;\nS:_;_:_;_:_;_:_\n_:r;_:r;_:_;_:_\n_:_;_:r;_:r;_:_\n_:_;_:_;_:r;_:r\n"
 }
