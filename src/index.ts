@@ -80,7 +80,7 @@ function generateJSONText() {
     const description = document.getElementById("task-description") as HTMLTextAreaElement;
     const preload = document.getElementById("task-preload") as HTMLTextAreaElement;
 
-    const filename = `${author}_${category}_${id}.json`;
+    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}.json`;
 
     let worldResult = ``;
     
@@ -89,7 +89,7 @@ function generateJSONText() {
         const w = document.getElementById(`dim-w-${wid}`) as HTMLInputElement;
         const h = document.getElementById(`dim-h-${wid}`) as HTMLInputElement;
 
-        worldResult += `x;${l.valueAsNumber},${w.valueAsNumber},${h.valueAsNumber};\\n`;
+        worldResult += `x;${l.valueAsNumber};${w.valueAsNumber};${h.valueAsNumber};\\n`;
         
         for (let j = 0; j < w.valueAsNumber; j++) {
             for (let i = 0; i < l.valueAsNumber; i++) {
@@ -110,18 +110,25 @@ function generateJSONText() {
     }
 
     let result = `{
-"title": "${title.value.replace(/\n/g, "\\n")}",\n
-"description": "${description.value.replace(/\n/g, "\\n")}",
-"preload": "${preload.value.replace(/\n/g, "\\n")}",
-"world": "${worldResult}"
+    "title": "${title.value.replace(/\n/g, "\\n")}",
+    "description": "${description.value.replace(/\n/g, "\\n")}",
+    "preload": "${preload.value.replace(/\n/g, "\\n")}",
+    "world": "${worldResult}"
 }`;
 
-    return result;
+    return { result, filename };
 }
 
 function showJSONText() {
+    const currentText = generateJSONText(); 
     const area = document.getElementById("show-json") as HTMLTextAreaElement;
-    area.innerText = generateJSONText();
+    area.value = currentText.result
+    const filename = document.getElementById("filename-json") as HTMLTextAreaElement;
+    filename.innerText = currentText.filename;
+}
+
+function downloadJSON() {
+    
 }
 
 // globals
