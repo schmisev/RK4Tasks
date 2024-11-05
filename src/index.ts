@@ -120,11 +120,15 @@ function generateJSONText() {
 }
 
 function showJSONText() {
-    const currentText = generateJSONText(); 
-    const area = document.getElementById("show-json") as HTMLTextAreaElement;
-    area.value = currentText.result
-    const filename = document.getElementById("filename-json") as HTMLTextAreaElement;
-    filename.innerText = currentText.filename;
+    try {
+        const currentText = generateJSONText();
+        const area = document.getElementById("show-json") as HTMLTextAreaElement;
+        area.value = currentText.result
+        const filename = document.getElementById("filename-json") as HTMLTextAreaElement;
+        filename.innerText = currentText.filename;
+    } catch {
+        
+    }
 }
 
 function downloadJSON() {
