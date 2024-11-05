@@ -1,6 +1,0 @@
-{
-    "title": "Dreierreihe",
-    "description": "Lege drei Blöcke hintereinander!",
-    "preload": "# Nix",
-    "world": "x;4;1;6;\nE:_;_:r;_:r;_:r"
-}
