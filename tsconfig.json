@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist/",
+    "lib": ["dom", "ES2021"],
     "noImplicitAny": true,
     "module": "es6",
-    "target": "es5",
-    "allowJs": true
-  },
-  "files": ["src/index.ts"]
+    "target": "es6",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "strict": true
+  }
 }

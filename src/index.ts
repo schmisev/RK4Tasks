@@ -1,172 +1,276 @@
 import "../style.less";
 
-const allWorldTables = document.getElementById("all-world-tables")!;
-const allWorldIds: number[] = [];
+import * as ace from "ace-builds";
+import "ace-builds/esm-resolver";
+const aceLangTools = require("ace-builds/src-noconflict/ext-language_tools");
 
-function dimTableRow(wid: number, l:number, w: number, h: number) {
-    return `<table id="dim-${wid}"><tr><td class="cell">
-    L = <input class="dim" id="dim-l-${wid}" type="number" value="${l}" min="1" onchange="updateWorldTable(${wid}); showJSONText();">
-    B = <input class="dim" id="dim-w-${wid}" type="number" value="${w}" min="1" onchange="updateWorldTable(${wid}); showJSONText();">
-    H = <input class="dim" id="dim-h-${wid}" type="number" value="${h}" min="1" onchange="updateWorldTable(${wid}); showJSONText();">
-    <button class="del" id="dim-del-${wid}" onclick="deleteWorldTable(${wid}); showJSONText();">LÖSCHEN</button>
-    <span>(rnd id ${wid})</span>
-    </td></tr></table>`;
+const title = document.getElementById("title-input")! as HTMLInputElement;
+const author = document.getElementById("author-input")! as HTMLInputElement;
+const category = document.getElementById("category-input")! as HTMLInputElement;
+const id = document.getElementById("id-input")! as HTMLInputElement;
+const descr = ace.edit("descr-editor");
+const preload = ace.edit("preload-editor");
+const output = ace.edit("output-editor");
+
+interface Field {
+    from: string;
+    to: string;
 }
 
-function worldTable(wid: number, l: number, w: number) {
-    let result = `<table class="world" id="world-${wid}">`;
+interface WorldMap {
+    l: number;
+    w: number;
+    h: number;
+    fields: Field[][];
+}
+
+function addMap(l: number, w: number, h:number) {
+    const map = {
+        l, w, h, fields: initFields(l, w),
+    }
+    map.fields[0][0].from = "S";
+    allWorlds.push(map);
+}
+
+// helper
+function initFields(l: number, w: number) {
+    const fields: Field[][] = [];
     for (let j = 0; j < w; j++) {
-        result += `<tr>`;
+        const line: Field[] = [];
         for (let i = 0; i < l; i++) {
-            result += tableCell(wid, i, j);
+            line.push(
+                {
+                    from: "_",
+                    to: "_",
+                }
+            )
         }
-        result += `</tr>`;
+        fields.push(line);
     }
-    result += `</table>`;
-    return result;
+    return fields;
 }
 
-function tableCell(wid: number, i: number, j: number) {
-    return `<td class="cell">
-    <input id="l-${wid}-${i}-${j}" class="cell left" value="_" onchange="showJSONText();"><br>↓<br><input id="r-${wid}-${i}-${j}" class="cell right" value="_" onchange="showJSONText();">
-    </td>`;
+function removeItem<T>(arr: Array<T>, index: number): Array<T> { 
+    if (index > -1) {
+        arr.splice(index, 1);
+    }
+    return arr;
 }
 
-// callbacks
-function updateWorldTable(wid: number) {
-    const l = document.getElementById(`dim-l-${wid}`) as HTMLInputElement;
-    const w = document.getElementById(`dim-w-${wid}`) as HTMLInputElement;
-    const h = document.getElementById(`dim-h-${wid}`) as HTMLInputElement;
-
-    replaceWorldTable(wid, worldTable(wid, l.valueAsNumber, w.valueAsNumber));
+// rendering
+function tagField(str: string) {
+    let classes = new Set<string>();
+    if (str == "") classes.add("is-void");
+    if (str == "_") classes.add("is-empty");
+    for (let char of str) {
+        if ("ESWN".includes(char)) {
+            classes.add("has-bot");
+        }
+        if ("rygb.+*".includes(char)) {
+            classes.add("has-block");
+        }
+        if ("RGBY?!".includes(char)) {
+            classes.add("has-marker");
+        }
+        if (char == "#") classes.add("is-wall");
+    }
+    return classes;
 }
 
-function replaceWorldTable(wid: number, replacement: string = null) {
-    const world = document.getElementById(`world-${wid}`);
-    const dim = document.getElementById(`dim-${wid}`);
-    if (world) {
-        if (replacement) {
-            world.outerHTML = replacement;
-        } else {
-            
+function renderField(f: Field, idx: number, x: number, y: number) {
+    let fromClasses = tagField(f.from);
+    let toClasses = tagField(f.to);
+    
+    return `
+    <div class="world-field">
+    <div class="${[...fromClasses].join(" ")}"><input class="from-input" id="from-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'from')" value="${f.from}"></div>
+    <div class="${[...toClasses].join(" ")}"><input class="to-input" id="to-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'to')" value="${f.to}"></div>
+    </div>
+    `
+}
+
+function renderWorldMap(m: WorldMap, idx: number) {
+    let html = `
+    <div class="world">
+    <div class="world-edit">
+        <div>
+            <button class="emoji" onclick="shiftTask(${idx}, -1)">⏫</button>
+            <button class="emoji" onclick="shiftTask(${idx}, 1)">⏬</button>
+            <button class="emoji" onclick="deleteTask(${idx})">❌</button>
+            <button class="emoji" onclick="addTaskBelow(${idx})">➕</button>
+        </div>
+        <div><b>Aufg. ${idx+1}</b></div>
+        <div>➡️ <input class="dim" id="l${idx}" type="number"
+        value="${m.l}" min="1" onchange="adjustSize(${idx}, 'l')"></div>
+        <div>⬇️ <input class="dim" id="w${idx}" type="number" 
+        value="${m.w}" min="1" onchange="adjustSize(${idx}, 'w')"></div>
+        <div>🔼 <input class="dim" id="h${idx}" type="number" 
+        value="${m.h}" min="1" onchange="adjustSize(${idx}, 'h')"></div>
+    </div>
+    <div class="world-container" style="grid-template-columns: repeat(${m.l}, 1fr);">
+    `
+    
+    for (const [j, line] of m.fields.entries()) {
+        for (const [i, field] of line.entries()) {
+            html += renderField(field, idx, i, j);
         }
     }
-}
 
-function createWorldTable() {
-    if (allWorldIds.length >= 100) return;
-    let wid: number = Math.floor(Math.random() * 100);
-    while (allWorldIds.includes(wid)) wid = Math.floor(Math.random() * 100);
-    allWorldIds.push(wid);
-    allWorldTables.innerHTML += dimTableRow(wid, 4, 3, 6);
-    allWorldTables.innerHTML += worldTable(wid, 4, 3);
-}
-
-function deleteWorldTable(wid: number) {
-    const idx = allWorldIds.indexOf(wid);
-    if (idx < 0) return;
-    allWorldIds.splice(idx, 1);
-    const world = document.getElementById(`world-${wid}`);
-    const dim = document.getElementById(`dim-${wid}`);
-    world.remove();
-    dim.remove();
+    html += `
+    </div>
+    </div>
+    `
+    return html;
 }
 
 function generateJSONText() {
-    const author = document.getElementById("task-author") as HTMLInputElement;
-    const category = document.getElementById("task-category") as HTMLInputElement;
-    const id = document.getElementById("task-id") as HTMLInputElement;
-    const title = document.getElementById("task-title") as HTMLTextAreaElement;
-    const description = document.getElementById("task-description") as HTMLTextAreaElement;
-    const preload = document.getElementById("task-preload") as HTMLTextAreaElement;
-
-    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}_${title.value}.json`;
+    let filename = `${(author.value || "unbekannt")}_${(category.value || "Standard")}_${id.value}`;
 
     let worldResult = ``;
     
-    for (const wid of allWorldIds) {
-        const l = document.getElementById(`dim-l-${wid}`) as HTMLInputElement;
-        const w = document.getElementById(`dim-w-${wid}`) as HTMLInputElement;
-        const h = document.getElementById(`dim-h-${wid}`) as HTMLInputElement;
+    for (const map of allWorlds) {
+        const l = map.l;
+        const w = map.w;
+        const h = map.h;
 
-        worldResult += `x;${l.valueAsNumber};${w.valueAsNumber};${h.valueAsNumber};\\n`;
+        worldResult += `x;${l};${w};${h};\\n`;
         
-        for (let j = 0; j < w.valueAsNumber; j++) {
-            for (let i = 0; i < l.valueAsNumber; i++) {
-                const lc = document.getElementById(`l-${wid}-${i}-${j}`) as HTMLInputElement;
-                const rc = document.getElementById(`r-${wid}-${i}-${j}`) as HTMLInputElement;
-                if (lc.value != "") {
-                    worldResult += lc.value;
-                    if (rc.value) {
+        for (let j = 0; j < w; j++) {
+            for (let i = 0; i < l; i++) {
+                const from = map.fields[j][i].from;
+                const to = map.fields[j][i].to;
+                if (from != "") {
+                    worldResult += from;
+                    if (to) {
                         worldResult += ":";
-                        worldResult += rc.value;
+                        worldResult += to;
                     }
                 }
-                if (i < l.valueAsNumber - 1)
+                if (i < l - 1)
                     worldResult += ";";
             }
             worldResult += "\\n";
         }
     }
 
-    let result = `{
+    let result =
+`{
     "title": "${title.value.replace(/\n/g, "\\n")}",
-    "description": "${description.value.replace(/\n/g, "\\n")}",
-    "preload": "${preload.value.replace(/\n/g, "\\n")}",
+    "description": "${descr.getValue().replace(/\n/g, "\\n")}",
+    "preload": "${preload.getValue().replace(/\n/g, "\\n")}",
     "world": "${worldResult}"
 }`;
 
     return { result, filename };
 }
 
-function showJSONText() {
-    try {
-        const currentText = generateJSONText();
-        const area = document.getElementById("show-json") as HTMLTextAreaElement;
-        area.value = currentText.result
-        const filename = document.getElementById("filename-json") as HTMLTextAreaElement;
-        filename.innerText = currentText.filename;
-    } catch {
-        
-    }
-}
-
-function downloadJSON() {
-    const currentText = generateJSONText();
-    downloadTextFile(currentText.filename, currentText.result)
-}
-
-function downloadTextFile(filename: string, text: string) {
-    const element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
+// OUT
+function updateUI() {
+    document.querySelector("#world-layout")!.innerHTML = 
+        allWorlds.map(renderWorldMap).join("\n");
+    const json = generateJSONText();
+    output.setValue(`"${json.filename}": ${json.result}`);
 }
 
 // globals
 declare global {
-    interface Window { 
-        updateWorldTable: any; 
-        replaceWorldTable: any;
-        createWorldTable: any; 
-        deleteWorldTable: any;
-        showJSONText: any;
-        downloadJSON: any;
+    interface Window {
+        updateUI: any;
+        shiftTask: any;
+        adjustSize: any;
+        changeValue: any;
+        deleteTask: any;
+        addTaskBelow: any;
     }
 }
-window.updateWorldTable = updateWorldTable;
-window.replaceWorldTable = replaceWorldTable;
-window.deleteWorldTable = deleteWorldTable;
-window.createWorldTable = createWorldTable;
-window.showJSONText = showJSONText;
-window.downloadJSON = downloadJSON;
 
-// initial setup
-createWorldTable();
-showJSONText();
+// IN
+window.shiftTask = function(idx: number, diff: number) {
+    const nw = allWorlds.length;
+    const realIdx = (idx + nw) % nw;
+    const swapIdx = (idx + diff + nw) % nw;
+    const [el, swapEl] = [allWorlds[realIdx], allWorlds[swapIdx]];
+    allWorlds[realIdx] = swapEl;
+    allWorlds[swapIdx] = el;
+
+    updateUI();
+}
+
+window.deleteTask = function(idx: number) {
+    const nw = allWorlds.length;
+    if (nw <= 1) return;
+    const realIdx = (idx + nw) % nw;
+
+    removeItem(allWorlds, realIdx);
+
+    updateUI();
+}
+
+window.addTaskBelow = function(idx: number) {
+    const nw = allWorlds.length;
+    const realIdx = (idx + nw) % nw;
+    allWorlds = [
+        ...allWorlds.slice(0, realIdx),
+        {
+            l: 4, w: 3, h: 6, fields: initFields(4, 3),
+        },
+        ...allWorlds.slice(realIdx)
+    ];
+
+    updateUI();
+}
+
+window.adjustSize = function(idx: number, type: "l" | "w" | "h") {
+    const map = allWorlds[idx];
+    const key = type + idx;
+    const value = parseInt((document.getElementById(key) as any).value as string);
+    if (value <= 0) {
+        (document.getElementById(key) as any).value = '1';
+        return;
+    }
+
+    switch (type) {
+        case "l":
+            for (let i = 0; i < (value - map.l); i++) {
+                for (const line of map.fields) {
+                    line.push({from: "_", to: "_"});
+                }
+            }
+            for (let i = 0; i < (map.l - value); i++) {
+                for (const line of map.fields) {
+                    line.pop();
+                }
+            }
+            map.l = value;
+            break;
+        case "w":
+            for (let i = 0; i < (value - map.w); i++) {
+                map.fields.push(...initFields(map.l, 1))
+            }
+            for (let i = 0; i < (map.w - value); i++) {
+                map.fields.pop();
+            }
+            map.w = value;
+            break;
+        case "h":
+            map.h = value;
+            break;
+    }
+
+    updateUI();
+}
+
+window.changeValue = function(idx: number, x: number, y: number, type: "from" | "to") {
+    const key = type + "-" + x + "-" + y;
+    const value = (document.getElementById(key) as any).value as string;
+    allWorlds[idx].fields[y][x][type] = value;
+
+    updateUI();
+}
+
+window.updateUI = updateUI;
+
+// app
+let allWorlds: WorldMap[] = [];
+addMap(4, 3, 6);
+updateUI();

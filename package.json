@@ -23,7 +23,11 @@
     "url": "https://github.com/schmisev/RK4Tasks/issues"
   },
   "homepage": "https://github.com/schmisev/RK4Tasks#readme",
+  "dependencies": {
+    "ace-builds": "^1.36.4"
+  },
   "devDependencies": {
+    "@types/ace": "^0.0.52",
     "@webpack-cli/generators": "^3.0.7",
     "css-loader": "^7.1.2",
     "gh-pages": "^6.1.1",
