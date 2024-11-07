@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[9479],{9479:(e,s,p)=>{e=p.nmd(e),ace.require(["ace/snippets/prolog"],(function(s){e&&(e.exports=s)}))}}]);

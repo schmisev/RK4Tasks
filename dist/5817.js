@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[5817],{5817:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/sparql"],(function(e){s&&(s.exports=e)}))}}]);

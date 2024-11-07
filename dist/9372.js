@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[9372],{9372:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/prisma"],(function(e){s&&(s.exports=e)}))}}]);

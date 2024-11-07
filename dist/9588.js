@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[9588],{9588:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/crystal"],(function(e){s&&(s.exports=e)}))}}]);

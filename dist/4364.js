@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[4364],{4364:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/scala"],(function(e){s&&(s.exports=e)}))}}]);

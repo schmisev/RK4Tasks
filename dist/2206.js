@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[2206],{2206:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/rust"],(function(e){s&&(s.exports=e)}))}}]);

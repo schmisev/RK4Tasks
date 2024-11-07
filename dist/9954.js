@@ -1,1 +1,0 @@
-(self.webpackChunktasks=self.webpackChunktasks||[]).push([[9954],{9954:(e,s,a)=>{e=a.nmd(e),ace.require(["ace/snippets/haskell_cabal"],(function(s){e&&(e.exports=s)}))}}]);
