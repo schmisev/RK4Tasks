@@ -83,8 +83,8 @@ function renderField(f: Field, idx: number, x: number, y: number) {
     
     return `
     <div class="world-field">
-    <div class="${[...fromClasses].join(" ")}"><input class="from-input" id="from-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'from')" value="${f.from}"></div>
-    <div class="${[...toClasses].join(" ")}"><input class="to-input" id="to-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'to')" value="${f.to}"></div>
+    <div class="${[...fromClasses].join(" ")}"><input class="from-input" id="from${idx}-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'from')" value="${f.from}"></div>
+    <div class="${[...toClasses].join(" ")}"><input class="to-input" id="to${idx}-${x}-${y}" onchange="changeValue(${idx}, ${x}, ${y}, 'to')" value="${f.to}"></div>
     </div>
     `
 }
@@ -261,7 +261,7 @@ window.adjustSize = function(idx: number, type: "l" | "w" | "h") {
 }
 
 window.changeValue = function(idx: number, x: number, y: number, type: "from" | "to") {
-    const key = type + "-" + x + "-" + y;
+    const key = type + idx + "-" + x + "-" + y;
     const value = (document.getElementById(key) as any).value as string;
     allWorlds[idx].fields[y][x][type] = value;
 
