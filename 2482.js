@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[2482],{2482:(e,s,a)=>{e=a.nmd(e),ace.require(["ace/snippets/logtalk"],(function(s){e&&(e.exports=s)}))}}]);

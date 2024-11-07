@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[4490],{4490:(e,s,a)=>{e=a.nmd(e),ace.require(["ace/snippets/mediawiki"],(function(s){e&&(e.exports=s)}))}}]);

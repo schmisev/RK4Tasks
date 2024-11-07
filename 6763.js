@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[6763],{6763:(e,s,p)=>{e=p.nmd(e),ace.require(["ace/snippets/prql"],(function(s){e&&(e.exports=s)}))}}]);
