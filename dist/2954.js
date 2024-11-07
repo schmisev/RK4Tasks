@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[2954],{2954:(e,s,t)=>{e=t.nmd(e),ace.require(["ace/snippets/turtle"],(function(s){e&&(e.exports=s)}))}}]);

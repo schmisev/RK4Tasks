@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[1344],{1344:(s,e,a)=>{s=a.nmd(s),ace.require(["ace/snippets/pascal"],(function(e){s&&(s.exports=e)}))}}]);

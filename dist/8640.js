@@ -1,0 +1,1 @@
+(self.webpackChunktasks=self.webpackChunktasks||[]).push([[8640],{8640:(e,s,a)=>{e=a.nmd(e),ace.require(["ace/snippets/fortran"],(function(s){e&&(e.exports=s)}))}}]);
