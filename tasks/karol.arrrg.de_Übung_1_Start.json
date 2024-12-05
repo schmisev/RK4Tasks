@@ -1,6 +1,0 @@
-{
-        "title": "Start",
-        "description": "Lege einen Ziegel an die markierte Stelle! Nutze dafür k1.hinlegen()",
-        "world": "x;4;1;6;\nE:_;_:_;_:_;_:_:r",
-        "preload": "# Nix"
-}

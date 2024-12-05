@@ -97,7 +97,7 @@ function renderWorldMap(m: WorldMap, idx: number) {
             <button class="emoji" onclick="shiftTask(${idx}, -1)">⏫</button>
             <button class="emoji" onclick="shiftTask(${idx}, 1)">⏬</button>
             <button class="emoji" onclick="deleteTask(${idx})">❌</button>
-            <button class="emoji" onclick="addTaskBelow(${idx})">➕</button>
+            <button class="emoji" onclick="addTaskAbove(${idx})">➕</button>
         </div>
         <div><b>Aufg. ${idx+1}</b></div>
         <div>➡️ <input class="dim" id="l${idx}" type="number"
@@ -180,7 +180,7 @@ declare global {
         adjustSize: any;
         changeValue: any;
         deleteTask: any;
-        addTaskBelow: any;
+        addTaskAbove: any;
     }
 }
 
@@ -206,14 +206,12 @@ window.deleteTask = function(idx: number) {
     updateUI();
 }
 
-window.addTaskBelow = function(idx: number) {
+window.addTaskAbove = function(idx: number) {
     const nw = allWorlds.length;
     const realIdx = (idx + nw) % nw;
     allWorlds = [
         ...allWorlds.slice(0, realIdx),
-        {
-            l: 4, w: 3, h: 6, fields: initFields(4, 3),
-        },
+        JSON.parse(JSON.stringify(allWorlds[realIdx])),
         ...allWorlds.slice(realIdx)
     ];
 
